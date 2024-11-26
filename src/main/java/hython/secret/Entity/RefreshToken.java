@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,9 +23,9 @@ public class RefreshToken {
     private String refreshToken;
 
     @Column(nullable = false)
-    private Date expires_at;
+    private LocalDateTime expires_at;
 
     @Column(nullable = false)
-    private Date created_at;
+    private LocalDateTime created_at;
 }
 

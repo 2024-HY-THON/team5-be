@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,8 +25,13 @@ public class Belog {
     @Column(nullable = false)
     private String content;
 
+    @CreationTimestamp
     @Column(nullable = false)
-    private Date datetime;
+    private LocalDateTime create_at;
+
+    @UpdateTimestamp
+    @Column
+    private LocalDateTime update_at;
 
     @Column(nullable = false)
     private String title;

@@ -3,8 +3,10 @@ package hython.secret.Entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,9 +32,22 @@ public class User {
     @Column(nullable = false)
     private String platform_id;
 
+    @CreationTimestamp
     @Column(nullable = false)
-    private Date joinDate;
+    private LocalDateTime joinDate;
 
     @Column(nullable = false)
-    private boolean is_status;
+    private int userCode;
+
+    @OneToMany(mappedBy = "user")
+    private List<Friends> friends;
+
+    @OneToMany(mappedBy = "friend")
+    private List<Friends> inverseFriends; // 자신을 친구로 추가한 사용자 목록
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Belog> belogs;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Award> award;
 }

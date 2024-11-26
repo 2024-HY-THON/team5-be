@@ -10,17 +10,25 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class Stamp {
+public class User_consent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int stamp_id;
+    private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "belog_id")
-    private Belog belog;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "consent_id")
+    private Consent consent;
+
+    @Column(nullable = false)
+    private boolean consent_status;
 
     @CreationTimestamp
     @Column(nullable = false)
-    private LocalDateTime create_at;
+    private LocalDateTime consent_date;
+
 }
