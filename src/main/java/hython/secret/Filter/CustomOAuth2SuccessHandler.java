@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -25,6 +26,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
+@Slf4j
 @Component
 public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtUtil jwtUtil;
@@ -32,14 +34,13 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
     private final RefreshTokenRepository refreshRepository;
     private final Long refreshMs = 24 * 60 * 60 * 1000L;    // 24시간
     private final UserRepository userRepository;
-    private final RegisterService registerService;
 
-    public CustomOAuth2SuccessHandler(JwtUtil jwtUtil, CookieUtil cookieUtil, RefreshTokenRepository refreshRepository, UserRepository userRepository, RegisterService registerService) {
+
+    public CustomOAuth2SuccessHandler(JwtUtil jwtUtil, CookieUtil cookieUtil, RefreshTokenRepository refreshRepository, UserRepository userRepository) {
         this.jwtUtil = jwtUtil;
         this.cookieUtil = cookieUtil;
         this.refreshRepository = refreshRepository;
         this.userRepository = userRepository;
-        this.registerService = registerService;
     }
 
 

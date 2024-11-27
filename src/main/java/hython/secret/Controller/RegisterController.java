@@ -1,12 +1,14 @@
 package hython.secret.Controller;
 
 import hython.secret.API.ApiResponseDTO;
-import hython.secret.DTO.NicknameDTO;
 import hython.secret.Service.VerifySevice;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -20,8 +22,8 @@ public class RegisterController {
         this.verifySevice = verifySevice;
     }
 
-    // OAuth2 방식으로 처음 로그인 시도 할 시 비밀번호 업데이트 함.
-    @Operation(summary = "OAuth2 비밀번호 설정 페이지", description = "소셜계정 로그인을 처음 시도했다면" +
+    // OAuth2 방식으로 처음 로그인 시도 할 시 닉네임 설정 함.
+    @Operation(summary = "OAuth2 닉네임 설정 페이지", description = "소셜계정 로그인을 처음 시도했다면" +
             "비밀번호 설정 페이지로 이동합니다.")
     @GetMapping("/setNickname")
     public ResponseEntity<ApiResponseDTO<Void>> joinPassword(){
@@ -30,10 +32,16 @@ public class RegisterController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/setNickname")
-    public ResponseEntity<ApiResponseDTO<Void>> setNickname(@RequestParam NicknameDTO request, HttpSession session) {
-
-        String nickname = request.getNickname();
+    @Operation(summary = "OAuth2 닉네임 설정 처리", description = "소셜 회원의 닉네임을 설정합니다." +
+            "등록할 닉네임 json 형식으로 서버로 전달.  닉네임 ( nickname )" +
+            "소셜 사용자 닉네임 설정 할 때만 인증 방식을 세션으로 사용할거임." + "닉네임 재설정 후, 다시 소셜 로그인을 진행해야함. ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "닉네임 설정 성공"),
+            @ApiResponse(responseCode = "400", description = "닉네임 전달 오류"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
+    @PostMapping("/setNicknameProc")
+    public ResponseEntity<ApiResponseDTO<Void>> setNickname(@RequestParam String nickname, HttpSession session) {
 
         String email = (String) session.getAttribute("email");
 
