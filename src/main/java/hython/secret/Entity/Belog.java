@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,4 +33,10 @@ public class Belog {
 
     @ColumnDefault("false")
     private boolean is_anonymous;
+
+    @ElementCollection
+    private List<String> tags;
+
+    @ElementCollection
+    private List<String> images;
 }
