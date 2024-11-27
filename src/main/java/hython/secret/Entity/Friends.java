@@ -14,14 +14,14 @@ public class Friends {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int friend_id;
+    private int friendId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "friend_user_id", nullable = false)
+    @JoinColumn(name = "friend_user_id")
     private User friend;
 
     @ColumnDefault("false")

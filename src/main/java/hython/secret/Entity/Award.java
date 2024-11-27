@@ -11,7 +11,7 @@ public class Award {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int award_id;
+    private int awardId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

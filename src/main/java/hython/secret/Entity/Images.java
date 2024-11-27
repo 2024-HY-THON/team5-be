@@ -11,12 +11,12 @@ public class Images {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int image_id;
+    private int imageId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
+    @Column
     private String imagePath;
 }
