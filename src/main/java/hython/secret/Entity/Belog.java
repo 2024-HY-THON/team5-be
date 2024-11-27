@@ -16,25 +16,22 @@ public class Belog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int belog_id;
+    private int belogId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
+    @Column
     private String content;
 
     @CreationTimestamp
-    @Column(nullable = false)
+    @Column
     private LocalDateTime create_at;
 
     @UpdateTimestamp
     @Column
     private LocalDateTime update_at;
-
-    @Column(nullable = false)
-    private String title;
 
     @ColumnDefault("false")
     private boolean is_anonymous;
