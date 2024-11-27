@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -24,7 +25,7 @@ public class Belog {
     private String content;
 
     @Column(nullable = false)
-    private Date datetime;
+    private LocalDateTime datetime;
 
     @Column(nullable = false)
     private String title;
