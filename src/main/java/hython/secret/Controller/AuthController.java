@@ -49,14 +49,9 @@ public class AuthController {
      * Access Token 발급 api
      * */
     @Operation(summary = "Access Token 발급 api", description = """
-               이 API는 프론트 개발자가 `Refresh Token`을 활용해 `Access Token`을 발급받기 위해 사용. 
-               **OAuth2 소셜 로그인 사용자**는 첫 로그인 시 `Refresh Token`만 부여되므로, 권한 인증이 필요할 때 이 API를 호출하여 `Access Token`을 발급받아야 함.
-
-               - **사용 방식**:
-                   - 로그인 후, 모든 요청에 대해 `Access Token`을 사용합니다.
-                   - 만료된 경우, 이 API를 통해 `Refresh Token`을 사용해 새 `Access Token`을 요청할 수 있음.
-                   - **OAuth2 소셜 로그인 사용자**는 첫 로그인 시 `Access Token`이 발급되지 않으므로, 이 API를 사용해 필요한 `Access Token`을 발급받아야 합니다.
-               """)
+        Refresh Token을 사용하여 새로운 Access Token을 발급받습니다.
+        만료된 Access Token을 대체하기 위해 사용됩니다.
+        """)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Access Token 발급 성공"),
             @ApiResponse(responseCode = "400", description = "Refresh Token 만료, 다시 로그인 해야함.")

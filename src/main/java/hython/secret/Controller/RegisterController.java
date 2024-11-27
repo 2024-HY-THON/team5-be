@@ -24,7 +24,7 @@ public class RegisterController {
 
     // OAuth2 방식으로 처음 로그인 시도 할 시 닉네임 설정 함.
     @Operation(summary = "OAuth2 닉네임 설정 페이지", description = "소셜계정 로그인을 처음 시도했다면" +
-            "비밀번호 설정 페이지로 이동합니다.")
+            "닉네임 설정 페이지로 이동합니다.")
     @GetMapping("/setNickname")
     public ResponseEntity<ApiResponseDTO<Void>> joinPassword(){
         ApiResponseDTO<Void> response = new ApiResponseDTO<>("success","oAuth2 소셜 로그인 닉네임 설정 페이지 성공", null);
@@ -32,9 +32,10 @@ public class RegisterController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "OAuth2 닉네임 설정 처리", description = "소셜 회원의 닉네임을 설정합니다." +
-            "등록할 닉네임 json 형식으로 서버로 전달.  닉네임 ( nickname )" +
-            "소셜 사용자 닉네임 설정 할 때만 인증 방식을 세션으로 사용할거임." + "닉네임 재설정 후, 다시 소셜 로그인을 진행해야함. ")
+    @Operation(summary = "OAuth2 닉네임 설정 처리", description = """
+        소셜 회원의 닉네임을 설정합니다. 닉네임을 JSON 형식으로 서버에 전달합니다.
+        인증은 세션을 통해 진행되며, 닉네임 재설정 후 소셜 로그인을 다시 진행해야 합니다.
+        """)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "닉네임 설정 성공"),
             @ApiResponse(responseCode = "400", description = "닉네임 전달 오류"),
