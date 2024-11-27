@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,4 +36,10 @@ public class Belog {
 
     @ColumnDefault("false")
     private boolean is_anonymous;
+
+    @ElementCollection
+    private List<String> tags;
+
+    @ElementCollection
+    private List<String> images;
 }
