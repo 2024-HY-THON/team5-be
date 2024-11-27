@@ -30,9 +30,8 @@ public class BelogController {
                 belogRequest.getImages(),
                 belogRequest.isAnonymous()
         );
-        return ResponseEntity.ok(Map.of(
-                "message", "Belog created!",
-                "belog_id", belog.getBelog_id()
-        ));
+
+        BelogResponse response = new BelogResponse("Belog created!", belog);
+        return ResponseEntity.ok(response);
     }
 }
