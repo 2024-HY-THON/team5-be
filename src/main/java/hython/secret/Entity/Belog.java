@@ -8,7 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -37,9 +39,7 @@ public class Belog {
     @ColumnDefault("false")
     private boolean is_anonymous;
 
-    @ElementCollection
-    private List<String> tags;
+    @OneToMany(mappedBy = "belog", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Belog_Tags> belogTags = new HashSet<>();
 
-    @ElementCollection
-    private List<String> images;
 }

@@ -1,9 +1,15 @@
 package hython.secret.Service;
 
 import java.util.*;
+
+import hython.secret.DTO.BelogDTO;
 import hython.secret.Entity.Belog;
+import hython.secret.Entity.Belog_Tags;
+import hython.secret.Entity.Tags;
 import hython.secret.Entity.User;
 import hython.secret.Repository.BelogRepository;
+import hython.secret.Repository.TagRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,43 +17,39 @@ import java.time.LocalDateTime;
 @Service
 public class BelogService {
     private final BelogRepository belogRepository;
+    private final TagRepository tagRepository;
 
-    public BelogService(BelogRepository belogRepository) {
+    @Autowired
+    public BelogService(BelogRepository belogRepository, TagRepository tagRepository) {
         this.belogRepository = belogRepository;
+        this.tagRepository = tagRepository;
     }
 
-    public Belog createBelog(int userId, String title, String content, List<String> tags, List<String> images, boolean isAnonymous) {
-        User user = new User();
-        user.setUser_id(userId);
-
+    public Boolean createBelog(BelogDTO request){
 
         Belog belog = new Belog();
-        belog.setUser(user);
-        belog.setContent(content);
-        belog.setTitle(title);
-        belog.setTags(tags);
-        belog.setImages(images);
-        belog.setDatetime(LocalDateTime.now());
-        belog.set_anonymous(isAnonymous);
-        return belogRepository.save(belog);
-    }
 
-    public Belog updateBelog(int belogId,String title, String content,List<String> tags, List<String> images, boolean isAnonymous) {
-        Belog belog = belogRepository.findById(belogId)
-                .orElseThrow(() -> new IllegalArgumentException("Belog ID : " + belogId + "not found"));
+        String content = request.getContent();
         belog.setContent(content);
-        belog.setDatetime(LocalDateTime.now());
-        belog.set_anonymous(isAnonymous);
-        belog.setTitle(title);
-        belog.setTags(tags);
-        belog.setImages(images);
-        return belogRepository.save(belog);
-    }
 
-    public void deleteBelog(int belogId) {
-        if(!belogRepository.existsById(belogId)) {
-            throw new IllegalArgumentException("Belog ID : " + belogId + "not found");
+        Set<Belog_Tags> belogTags = new HashSet<>();
+        for (String tagName : request.getTags()) {
+            Tags tag = tagRepository.findByName(tagName);
+            tag.setName(tagName);
+            tagRepository.save(tag);  // 새로운 태그라면 태그 생성
+
+            Belog_Tags belogTag = new Belog_Tags();
+            belogTag.setBelog(belog);
+            belogTag.setTags(tag);
+
+            belogTags.add(belogTag);
         }
-        belogRepository.deleteById(belogId);
+
+        belog.setBelogTags(belogTags);
+
+        belogRepository.save(belog);
+
+        return true;
     }
+
 }
