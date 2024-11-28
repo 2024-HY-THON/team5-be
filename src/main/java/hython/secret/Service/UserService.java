@@ -79,7 +79,7 @@ public class UserService {
         String toNickname = toUser.getNickName();
 
         if (fromUser.getFriends().contains(toUser)){
-            log.info("이미 친구 관계입니다.");
+            log.warn("이미 친구 관계입니다: {} -> {}", fromUser.getEmail(), toUser.getEmail());
             throw new Exception("이미 친구 관계입니다.");
         }
 

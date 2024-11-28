@@ -31,13 +31,9 @@ public class UserController {
     public ResponseEntity<ApiResponseDTO<Void>> sendFriendsRequest(@RequestBody FriendShipDTO requestDTO,
                                                                    Principal principal) throws Exception {
         try {
-            // 존재하는 유저인지 확인
             if (userService.existsByUser(requestDTO)) {
                 String userCode = requestDTO.getUserCode();
-
-                // 친구 요청 추가
                 userService.addFriendShip(userCode, principal);
-
                 return ResponseEntity.ok(new ApiResponseDTO<>("200", "친구 요청이 성공적으로 전송되었습니다.", null));
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -60,12 +56,19 @@ public class UserController {
 
     }
 
-    @PostMapping("/friends/approve/{friend_id}")
-    public ResponseEntity<ApiResponseDTO<Void>> approveFriend(@PathVariable("friend_id") int friend_id){
-        if(userService.approveRequest(friend_id)){
-            log.info("친구 요청을 성공적으로 수락되었습니다.");
-            return ResponseEntity.ok(new ApiResponseDTO<>("200", "친구 요청이 성공적으로 수락되었습니다.", null));
+    // 친구 요청 수락
+    @PutMapping("/friends/approve/{friendId}")
+    public ResponseEntity<ApiResponseDTO<Void>> approveFriend(@PathVariable("friendId") int friendId){
+        try {
+            if (userService.approveRequest(friendId)) {
+                log.info("친구 요청을 성공적으로 수락되었습니다.");
+                return ResponseEntity.ok(new ApiResponseDTO<>("200", "친구 요청이 성공적으로 수락되었습니다.", null));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponseDTO<>("400", "해당 친구 요청을 찾을 수 없습니다.", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new ApiResponseDTO<>("500", "친구 요청 수락 중 오류가 발생했습니다: " + e.getMessage(), null));
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                new ApiResponseDTO<>("400", "해당 유저가 존재하지 않습니다.", null));    }
+    }
 }
