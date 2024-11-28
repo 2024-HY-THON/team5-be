@@ -5,5 +5,5 @@ import hython.secret.Entity.Belog;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BelogRepository extends JpaRepository<Belog, Integer> {
-    List<Belog> findByUserId(int userId);
+//    List<Belog> findByUserId(int userId);
 }
