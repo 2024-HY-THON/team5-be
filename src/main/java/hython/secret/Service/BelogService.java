@@ -4,6 +4,7 @@ import java.util.*;
 
 import hython.secret.DTO.BelogDTO;
 import hython.secret.DTO.BelogResponseDTO;
+import hython.secret.DTO.UserStatsDTO;
 import hython.secret.Entity.*;
 import hython.secret.Repository.BelogRepository;
 import hython.secret.Repository.TagRepository;
@@ -130,5 +131,12 @@ public class BelogService {
                         belog.getBelogLikeCount()
                 ))
                 .collect(Collectors.toList());
+    }
+    @Transactional
+    public UserStatsDTO getUserStats(int userId) {
+        int belogCount = userRepository.countBelogsByUserId(userId);
+        long totalLikes = belogRepository.sumLikesByUser(userId);
+        int awardCount = userRepository.countAwardsByUserId(userId);
+        return new UserStatsDTO(belogCount, totalLikes, awardCount);
     }
 }
