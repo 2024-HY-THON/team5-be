@@ -33,10 +33,11 @@ public class Friends {
     private String friendNickName;
 
     @Column
-    private FriendShipStatus status;
+    private FriendShipStatus status;  // 친구 요청 ㅅㅇ태
 
     @Column
     private boolean isFrom;
+
     @Column
     private int counterId;
     // 상대 요청의 아이디

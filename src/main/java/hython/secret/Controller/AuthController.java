@@ -72,7 +72,7 @@ public class AuthController {
 
                 ApiResponseDTO<Map<String,String>> responseDTO = new ApiResponseDTO<>(
                         "error","invalid refresh token", null
-                );
+                , null);
                 //response status code
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
             }
@@ -82,7 +82,7 @@ public class AuthController {
             if (!isExist){
                 ApiResponseDTO<Map<String,String>> responseDTO = new ApiResponseDTO<>(
                         "error","invalid refresh token", null
-                );
+                , null);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
             }
 
@@ -100,11 +100,11 @@ public class AuthController {
 
             ApiResponseDTO<Map<String,String>> responseDTO = new ApiResponseDTO<>(
                     "success","AccessToken이 성공적으로 발급되었습니다.", tokens
-            );
+            , null);
 
             return ResponseEntity.ok(responseDTO);
         } catch (ExpiredJwtException e){
-            ApiResponseDTO<Map<String,String>> responseDTO = new ApiResponseDTO<>("error","Refresh Token이 만료되었습니다. 다시 로그인 해주세요", null);
+            ApiResponseDTO<Map<String,String>> responseDTO = new ApiResponseDTO<>("error","Refresh Token이 만료되었습니다. 다시 로그인 해주세요", null, null);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDTO);
         }
     }

@@ -78,8 +78,10 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
 
-                        .requestMatchers("/test","/login/**","/auth/**","/register/**",
-                                "/v3/api-docs/**", "/swagger/**", "/swagger-ui/**", "/belogs/**").permitAll()
+                        .requestMatchers("/login/**","/auth/**","/register/**",
+                                "/v3/api-docs/**", "/swagger/**", "/swagger-ui/**", "/belogs/**",
+                                "/images/**","/award/**").permitAll()
+
                         .anyRequest().authenticated()
                 );
 

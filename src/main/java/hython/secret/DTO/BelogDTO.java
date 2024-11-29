@@ -11,5 +11,5 @@ public class BelogDTO {
 
     private String content;
     private Set<String> tags;
-
+    private String email;
 }
