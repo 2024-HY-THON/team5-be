@@ -48,4 +48,10 @@ public class Belog {
     @ColumnDefault("false")
     private boolean isShared;
 
+
+    private long belogLikeCount = 0;
+
+    public void incrementBelogLikeCount() {
+        this.belogLikeCount++;
+    }
 }
