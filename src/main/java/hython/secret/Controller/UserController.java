@@ -3,9 +3,10 @@ package hython.secret.Controller;
 
 import hython.secret.API.ApiResponseDTO;
 import hython.secret.DTO.FriendShipDTO;
-import hython.secret.DTO.UserStatsDTO;
 import hython.secret.DTO.WaitingFriendListDTO;
+import hython.secret.Repository.UserRepository;
 import hython.secret.Service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -22,10 +22,12 @@ public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/friends/{userCode}")
@@ -74,5 +76,19 @@ public class UserController {
     }
 
 
+    /**
+     * 친구 찾기
+     */
+    @Operation(summary = "사용자 찾기 api", description = "사용자를 찾을 수 있습니다.")
+    @PostMapping("/find")
+    public ResponseEntity<ApiResponseDTO<String>> findUser(@RequestBody FriendShipDTO requestDTP){
+        if(userService.existsByUser(requestDTP)){
+            String userCode = requestDTP.getUserCode();
+            String nickname = requestDTP.getNickname();
+            log.info("사용자를 찾았습니다.{}, {}", userCode, nickname);
+            return ResponseEntity.ok(new ApiResponseDTO<>("200", "유저를 찾았습니다.", userCode, nickname));
 
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new ApiResponseDTO<>("400", "해당 사용자를 찾을 수 없습니다.", null, null));    }
 }
