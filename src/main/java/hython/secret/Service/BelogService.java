@@ -23,7 +23,7 @@ public class BelogService {
         this.tagRepository = tagRepository;
     }
 
-    public int createBelog(BelogDTO request){
+    public Belog createBelog(BelogDTO request){
 
         Belog belog = new Belog();
 
@@ -51,10 +51,10 @@ public class BelogService {
         }
         belog.setBelogTags(belogTags);
         Belog savedBelog = belogRepository.save(belog);
-        return savedBelog.getBelogId();
+        return savedBelog;
     }
 
-    public int updateBelog(int belogId, BelogDTO request){
+    public Belog updateBelog(int belogId, BelogDTO request){
         Belog belog = belogRepository.findById(belogId);
         belog.setContent(request.getContent());
         belog.setUpdate_at(LocalDateTime.now());
@@ -78,7 +78,7 @@ public class BelogService {
         }
         belog.setBelogTags(updatedBelogTags);
         Belog savedBelog = belogRepository.save(belog);
-        return savedBelog.getBelogId();
+        return savedBelog;
     }
 
     public int deleteBelog(int belogId) {
