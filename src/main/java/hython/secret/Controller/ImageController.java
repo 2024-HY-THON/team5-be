@@ -3,16 +3,18 @@ package hython.secret.Controller;
 import hython.secret.API.ApiResponseDTO;
 import hython.secret.Service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
+@RequestMapping("/images")
 public class ImageController {
 
     private final ImageService imageService;
@@ -52,6 +54,34 @@ public class ImageController {
     }
 
     /**
+     *  스티커 이미지 전체 조회
+     * */
+    @Operation(summary = "스티커 이미지 전체 조회 API", description = """
+            모든 스티커 이미지를 조회합니다.
+        """)
+    @GetMapping("/sticker")
+    public ResponseEntity<ApiResponseDTO<List<String>>> getAllStickerImages() {
+        try {
+            List<String> baseImages = imageService.getAllStickerImages();
+            ApiResponseDTO<List<String>> responseDTO = new ApiResponseDTO<>(
+                    "success",
+                    "모든 스티커 이미지를 성공적으로 조회했습니다.",
+                    baseImages,
+                    null
+            );
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseDTO<List<String>> responseDTO = new ApiResponseDTO<>(
+                    "error",
+                    "스티커 이미지를 조회하는데 실패했습니다.",
+                    null,
+                    null
+            );
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * 스탬프 이미지 변환
      * */
     @Operation(summary = "스탬프 이미지 조회 API", description = """
@@ -76,6 +106,34 @@ public class ImageController {
                     null
             );
             return new ResponseEntity<>(responseDTO, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * 스탬프 이미지 전체 조회
+     */
+    @Operation(summary = "스탬프 이미지 전체 조회 API", description = """
+            모든 스탬프 이미지를 조회합니다.
+        """)
+    @GetMapping("/stamp")
+    public ResponseEntity<ApiResponseDTO<List<String>>> getAllStampImages() {
+        try {
+            List<String> baseImages = imageService.getAllStampImages();
+            ApiResponseDTO<List<String>> responseDTO = new ApiResponseDTO<>(
+                    "success",
+                    "모든 스탬프 이미지를 성공적으로 조회했습니다.",
+                    baseImages,
+                    null
+            );
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseDTO<List<String>> responseDTO = new ApiResponseDTO<>(
+                    "error",
+                    "스탬프 이미지를 조회하는데 실패했습니다.",
+                    null,
+                    null
+            );
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -109,6 +167,34 @@ public class ImageController {
     }
 
     /**
+     * 캐릭터 이미지 전체 조회
+     */
+    @Operation(summary = "캐릭터 이미지 전체 조회 API", description = """
+            모든 캐릭터 이미지를 조회합니다.
+        """)
+    @GetMapping("/character")
+    public ResponseEntity<ApiResponseDTO<List<String>>> getAllCharacterImages() {
+        try {
+            List<String> baseImages = imageService.getAllCharacterImages();
+            ApiResponseDTO<List<String>> responseDTO = new ApiResponseDTO<>(
+                    "success",
+                    "모든 캐릭터 이미지를 성공적으로 조회했습니다.",
+                    baseImages,
+                    null
+            );
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseDTO<List<String>> responseDTO = new ApiResponseDTO<>(
+                    "error",
+                    "캐릭터 이미지를 조회하는데 실패했습니다.",
+                    null,
+                    null
+            );
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * 말풍선 이미지 변환
      * */
 
@@ -134,6 +220,34 @@ public class ImageController {
                     null
             );
             return new ResponseEntity<>(responseDTO, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * 말풍선 이미지 전체 조회
+     */
+    @Operation(summary = "말풍선 이미지 전체 조회 API", description = """
+            모든 말풍선 이미지를 조회합니다.
+        """)
+    @GetMapping("/speech-bubble")
+    public ResponseEntity<ApiResponseDTO<List<String>>> getAllSpeechBubbleImages() {
+        try {
+            List<String> baseImages = imageService.getAllSBImages();
+            ApiResponseDTO<List<String>> responseDTO = new ApiResponseDTO<>(
+                    "success",
+                    "모든 말풍선 이미지를 성공적으로 조회했습니다.",
+                    baseImages,
+                    null
+            );
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseDTO<List<String>> responseDTO = new ApiResponseDTO<>(
+                    "error",
+                    "말풍선 이미지를 조회하는데 실패했습니다.",
+                    null,
+                    null
+            );
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -164,5 +278,34 @@ public class ImageController {
             return new ResponseEntity<>(responseDTO, HttpStatus.NOT_FOUND);
         }
     }
+
+    /**
+     * 모자 이미지 전체 조회
+     */
+    @Operation(summary = "모자 이미지 전체 조회 API", description = """
+            모든 모자 이미지를 조회합니다.
+        """)
+    @GetMapping("/hat")
+    public ResponseEntity<ApiResponseDTO<List<String>>> getAllHatImages() {
+        try {
+            List<String> baseImages = imageService.getAllHatImages();
+            ApiResponseDTO<List<String>> responseDTO = new ApiResponseDTO<>(
+                    "success",
+                    "모든 모자 이미지를 성공적으로 조회했습니다.",
+                    baseImages,
+                    null
+            );
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseDTO<List<String>> responseDTO = new ApiResponseDTO<>(
+                    "error",
+                    "모자 이미지를 조회하는데 실패했습니다.",
+                    null,
+                    null
+            );
+            return new ResponseEntity<>(responseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }

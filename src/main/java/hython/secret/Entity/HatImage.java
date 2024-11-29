@@ -20,8 +20,4 @@ public class HatImage {
 
     public HatImage() {}
 
-    public HatImage(String name, byte[] imageData) {
-        this.name = name;
-        this.imageData = imageData;
-    }
 }

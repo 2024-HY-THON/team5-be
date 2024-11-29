@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Table
+@Entity
 public class SpeechBubbleImage {
 
     @Id
