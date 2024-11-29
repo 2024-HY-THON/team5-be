@@ -72,5 +72,14 @@ public class BelogController {
         }
     }
 
+    @PostMapping("/{belogId}/share")
+    public ResponseEntity<ApiResponseDTO<Void>> shareBelog(@PathVariable int belogId){
+        try{
+            String shareLink = belogService.shareBelog(belogId);
+            return ResponseEntity.ok(new ApiResponseDTO<>("success", shareLink, null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(401).body(new ApiResponseDTO<>("error", e.getMessage(), null));
+        }
+    }
 
 }

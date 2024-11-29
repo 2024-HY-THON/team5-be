@@ -9,6 +9,7 @@ import hython.secret.Entity.Tags;
 import hython.secret.Entity.User;
 import hython.secret.Repository.BelogRepository;
 import hython.secret.Repository.TagRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,18 +36,24 @@ public class BelogService {
 
         Set<Belog_Tags> belogTags = new HashSet<>();
         for (String tagName : request.getTags()) {
-            Tags tag = tagRepository.findByName(tagName);
-            tag.setName(tagName);
-            tagRepository.save(tag);  // 새로운 태그라면 태그 생성
+            // Optional을 활용해 태그를 검색하거나 새 태그 생성
+            Tags tag = tagRepository.findByName(tagName)
+                    .orElseGet(() -> {
+                        Tags newTag = new Tags();
+                        newTag.setName(tagName);
+                        return tagRepository.save(newTag); // 새로운 태그 저장
+                    });
 
+            // Belog_Tags 객체 생성 및 관계 설정
             Belog_Tags belogTag = new Belog_Tags();
             belogTag.setBelog(belog);
             belogTag.setTags(tag);
 
+            // Belog_Tags 추가
             belogTags.add(belogTag);
         }
         belog.setBelogTags(belogTags);
-
+        System.out.println("생성완료오?");
         belogRepository.save(belog);
 
         return true;
@@ -58,12 +65,20 @@ public class BelogService {
         belog.setUpdate_at(LocalDateTime.now());
         Set<Belog_Tags> updatedBelogTags = new HashSet<>();
         for (String tagName : request.getTags()) {
-            Tags tag = tagRepository.findByName(tagName);
-            tag.setName(tagName);
-            tagRepository.save(tag);
+            // Optional을 활용해 태그를 검색하거나 새 태그 생성
+            Tags tag = tagRepository.findByName(tagName)
+                    .orElseGet(() -> {
+                        Tags newTag = new Tags();
+                        newTag.setName(tagName);
+                        return tagRepository.save(newTag); // 새로운 태그 저장
+                    });
+
+            // Belog_Tags 객체 생성 및 관계 설정
             Belog_Tags belogTag = new Belog_Tags();
             belogTag.setBelog(belog);
             belogTag.setTags(tag);
+
+            // Belog_Tags 추가
             updatedBelogTags.add(belogTag);
         }
         belog.setBelogTags(updatedBelogTags);
@@ -76,5 +91,15 @@ public class BelogService {
         if(belog == null) throw new IllegalArgumentException("Belog ID" + belogId + " not found");
         belogRepository.delete(belog);
         return true;
+    }
+
+    @Transactional
+    public String shareBelog(int belogId) {
+        Belog belog = belogRepository.findById(belogId);
+        String shareLink = "http://localhost:8080/belogs/share/" + belogId + "-" + UUID.randomUUID();
+        belog.setShared(true);
+        belog.setShareLink(shareLink);
+        belogRepository.save(belog);
+        return shareLink;
     }
 }
