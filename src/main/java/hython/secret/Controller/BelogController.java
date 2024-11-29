@@ -33,8 +33,6 @@ public class BelogController {
     })
     @Operation(summary = "별록 작성 api",
             description = "태그와 내용을 전달 받으면 저장합니다.")
-
-
     @PostMapping("/create")
     public ResponseEntity<ApiResponseDTO<?>> createBelog(@RequestBody BelogDTO request){
         Belog result = belogService.createBelog(request);
@@ -89,5 +87,12 @@ public class BelogController {
     public ResponseEntity<UserStatsDTO> getUserStats(@PathVariable int userId) {
         UserStatsDTO stats = belogService.getUserStats(userId);
         return ResponseEntity.ok(stats);
+    }
+
+
+    @GetMapping("/friends")
+    public ResponseEntity<List<BelogResponseDTO>> getFriendsBelog() {
+        List<BelogResponseDTO> friendBelogs = belogService.getFriendBelogs();
+        return ResponseEntity.ok(friendBelogs);
     }
 }
