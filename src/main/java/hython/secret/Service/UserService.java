@@ -9,13 +9,8 @@ import hython.secret.Entity.User;
 import hython.secret.Repository.FriendsRepository;
 import hython.secret.Repository.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -55,7 +50,7 @@ public class UserService {
         String nickname = friendShipDTO.getNickname();
         String userCode = friendShipDTO.getUserCode();
 
-        if(userRepository.existsByNickname(nickname)){
+        if(userRepository.existsByNickName(nickname)){
             if(userRepository.existsByUserCode(userCode)){
                 return true;
             } else{

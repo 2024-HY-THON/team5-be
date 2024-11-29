@@ -47,8 +47,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Friends> friends;
 
-    @OneToMany(mappedBy = "friend")
-    private List<Friends> inverseFriends = new ArrayList<>(); // 자신을 친구로 추가한 사용자 목록
+//    @OneToMany(mappedBy = "friend")
+//    private List<Friends> inverseFriends = new ArrayList<>(); // 자신을 친구로 추가한 사용자 목록
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Belog> belogs;
