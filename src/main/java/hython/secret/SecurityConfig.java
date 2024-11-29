@@ -60,7 +60,7 @@ public class SecurityConfig {
                                 CorsConfiguration config = new CorsConfiguration();
 
 
-                                config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                                config.setAllowedOrigins(Collections.singletonList("http://localhost:3001"));
                                 config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // 허용할 메소드 Get ect on
                                 config.setAllowCredentials(true);
                                 config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
@@ -125,5 +125,12 @@ public class SecurityConfig {
 
         return http.build();
     }
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.csrf(csrf -> csrf.disable()) // CSRF 비활성화
+//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); // 모든 요청 허용
+//
+//        return http.build();
+//    }
 
 }

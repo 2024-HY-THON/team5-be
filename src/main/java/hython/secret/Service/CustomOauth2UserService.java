@@ -105,7 +105,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
             httpServletResponse.addCookie(cookieUtil.createCookie("refresh",refresh));
 
             try {
-                httpServletResponse.sendRedirect("http://localhost:8080/register/setNickname"); // 클라이언트 개발자가 리다이렉트 할 URI
+                httpServletResponse.sendRedirect("http://localhost:3001/setNickname"); // 클라이언트 개발자가 리다이렉트 할 URI
                 throw new OAuth2AuthenticationException("닉네임 설정 페이지로 리다이렉트되었습니다."); // 리다이렉트를 수행했으므로 메서드 종료
             }  catch (IOException e) {
                 log.error("리다이렉션 실패");
