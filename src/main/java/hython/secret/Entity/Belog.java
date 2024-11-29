@@ -37,7 +37,7 @@ public class Belog {
     private LocalDateTime update_at;
 
     @ColumnDefault("false")
-    private boolean is_anonymous;
+    private boolean is_private;
 
     @OneToMany(mappedBy = "belog", cascade = CascadeType.ALL)
     private Set<Belog_Tags> belogTags = new HashSet<>();
