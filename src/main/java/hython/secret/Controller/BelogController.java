@@ -31,6 +31,8 @@ public class BelogController {
     })
     @Operation(summary = "별록 작성 api",
             description = "태그와 내용을 전달 받으면 저장합니다.")
+
+
     @PostMapping("/create")
     public ResponseEntity<ApiResponseDTO<Void>> createBelog(@RequestBody BelogDTO request){
         if(belogService.createBelog(request)){
@@ -57,4 +59,18 @@ public class BelogController {
         }
 
     }
+
+    @PutMapping("/{belogId}")
+    public ResponseEntity<ApiResponseDTO<Void>> updateBelog(@PathVariable int belogId, @RequestBody BelogDTO request){
+        boolean result = belogService.updateBelog(belogId, request);
+        
+        if(result){
+            return ResponseEntity.ok(new ApiResponseDTO<>("success", "별록 수정이 완료되었습니다", null));
+        }
+        else{
+            return ResponseEntity.status(404).body(new ApiResponseDTO<>("error", "별록 수정에 실패했습니다.", null));
+        }
+    }
+
+
 }
