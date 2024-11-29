@@ -5,6 +5,7 @@ import java.util.*;
 
 import hython.secret.API.ApiResponseDTO;
 import hython.secret.DTO.BelogDTO;
+import hython.secret.DTO.BelogResponseDTO;
 import hython.secret.Entity.Belog;
 import hython.secret.Service.BelogService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -74,5 +75,12 @@ public class BelogController {
         long result = belogService.likeBelog(belogId);
         return ResponseEntity.ok(new ApiResponseDTO<>("success", "좋아용 증가!", result, null));
 
+    }
+
+
+    @GetMapping("/random")
+    public ResponseEntity<List<BelogResponseDTO>> getRandomBelog(){
+        List<BelogResponseDTO> randomBelogs = belogService.getRandomBelogs();
+        return ResponseEntity.ok(randomBelogs);
     }
 }

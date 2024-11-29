@@ -3,30 +3,37 @@ package hython.secret.Service;
 import java.util.*;
 
 import hython.secret.DTO.BelogDTO;
+import hython.secret.DTO.BelogResponseDTO;
 import hython.secret.Entity.*;
 import hython.secret.Repository.BelogRepository;
 import hython.secret.Repository.TagRepository;
+import hython.secret.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Service
 public class BelogService {
     private final BelogRepository belogRepository;
     private final TagRepository tagRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public BelogService(BelogRepository belogRepository, TagRepository tagRepository) {
+    public BelogService(BelogRepository belogRepository, TagRepository tagRepository, UserRepository userRepository) {
         this.belogRepository = belogRepository;
         this.tagRepository = tagRepository;
+        this.userRepository = userRepository;
     }
 
+    @Transactional
     public Belog createBelog(BelogDTO request){
 
         Belog belog = new Belog();
-
+        String email = request.getEmail();
+        User user = userRepository.findByEmail(email);
         String content = request.getContent();
         belog.setContent(content);
         belog.setCreate_at(LocalDateTime.now());
@@ -49,7 +56,9 @@ public class BelogService {
             // Belog_Tags 추가
             belogTags.add(belogTag);
         }
+        belog.setScope(Scope.ALL);
         belog.setBelogTags(belogTags);
+        belog.setUser(user);
         Belog savedBelog = belogRepository.save(belog);
         return savedBelog;
     }
@@ -107,5 +116,19 @@ public class BelogService {
         return belog.getBelogLikeCount();
     }
 
+    public List<BelogResponseDTO> getRandomBelogs() {
+        // Scope가 ALL인 Belog 중에서 랜덤으로 3개 조회
+        List<Belog> belogs = belogRepository.findRandomByScope(Scope.ALL.name(), 3);
 
+        // Belog를 DTO로 변환
+        return belogs.stream()
+                .map(belog -> new BelogResponseDTO(
+                        belog.getBelogId(),
+                        belog.getContent(),
+                        belog.getCreate_at(),
+                        belog.getBelogTags().stream().map(tag -> tag.getTags().getName()).collect(Collectors.toList()),
+                        belog.getBelogLikeCount()
+                ))
+                .collect(Collectors.toList());
+    }
 }
