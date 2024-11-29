@@ -31,6 +31,7 @@ public class BelogService {
 
         String content = request.getContent();
         belog.setContent(content);
+        belog.setCreate_at(LocalDateTime.now());
 
         Set<Belog_Tags> belogTags = new HashSet<>();
         for (String tagName : request.getTags()) {
@@ -44,7 +45,6 @@ public class BelogService {
 
             belogTags.add(belogTag);
         }
-
         belog.setBelogTags(belogTags);
 
         belogRepository.save(belog);
@@ -52,4 +52,29 @@ public class BelogService {
         return true;
     }
 
+    public Boolean updateBelog(int belogId, BelogDTO request){
+        Belog belog = belogRepository.findById(belogId);
+        belog.setContent(request.getContent());
+        belog.setUpdate_at(LocalDateTime.now());
+        Set<Belog_Tags> updatedBelogTags = new HashSet<>();
+        for (String tagName : request.getTags()) {
+            Tags tag = tagRepository.findByName(tagName);
+            tag.setName(tagName);
+            tagRepository.save(tag);
+            Belog_Tags belogTag = new Belog_Tags();
+            belogTag.setBelog(belog);
+            belogTag.setTags(tag);
+            updatedBelogTags.add(belogTag);
+        }
+        belog.setBelogTags(updatedBelogTags);
+        belogRepository.save(belog);
+        return true;
+    }
+
+    public boolean deleteBelog(int belogId) {
+        Belog belog = belogRepository.findById(belogId);
+        if(belog == null) throw new IllegalArgumentException("Belog ID" + belogId + " not found");
+        belogRepository.delete(belog);
+        return true;
+    }
 }
