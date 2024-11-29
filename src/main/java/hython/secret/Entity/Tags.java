@@ -12,8 +12,8 @@ public class Tags {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int tag_id;
+    private int tagId;
 
-    @Column(unique=true)
-    private String tag_name;
+    @Column(name = "tagName", unique=true)
+    private String name;
 }

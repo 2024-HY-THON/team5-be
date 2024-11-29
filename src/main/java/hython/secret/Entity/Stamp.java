@@ -14,13 +14,13 @@ public class Stamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int stamp_id;
+    private int stampId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "belog_id")
     private Belog belog;
 
     @CreationTimestamp
-    @Column(nullable = false)
+    @Column
     private LocalDateTime create_at;
 }

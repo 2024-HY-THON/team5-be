@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,39 +16,47 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int user_id;
+    private int userId;
 
-    @Column(nullable = false)
+    @Column
+    private String userCode;
+
+    @Column
     private String username;
 
     @Column
     private String nickName;
 
-    @Column(nullable = false)
+    @Column(unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column
+    private String role;
+
+    @Column
     private String platform;
 
-    @Column(nullable = false)
+    @Column
     private String platform_id;
 
     @CreationTimestamp
-    @Column(nullable = false)
+    @Column
     private LocalDateTime joinDate;
 
-    @Column(nullable = false)
-    private int userCode;
 
     @OneToMany(mappedBy = "user")
     private List<Friends> friends;
 
-    @OneToMany(mappedBy = "friend")
-    private List<Friends> inverseFriends; // 자신을 친구로 추가한 사용자 목록
+//    @OneToMany(mappedBy = "friend")
+//    private List<Friends> inverseFriends = new ArrayList<>(); // 자신을 친구로 추가한 사용자 목록
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Belog> belogs;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Award> award;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<User_alarm> userAlarms; // 사용자-알림 중간 테이블 매핑
+
 }

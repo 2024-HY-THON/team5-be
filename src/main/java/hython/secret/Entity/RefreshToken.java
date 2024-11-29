@@ -19,13 +19,16 @@ public class RefreshToken {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "refresh_token")
+    @Column
+    private String email;
+
+    @Column
     private String refreshToken;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime expires_at;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime created_at;
 }
 

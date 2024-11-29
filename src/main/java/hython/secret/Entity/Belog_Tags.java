@@ -14,10 +14,10 @@ public class Belog_Tags {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "tag_id", nullable = false)
+    @JoinColumn(name = "tag_id")
     private Tags tags;
 
     @ManyToOne
-    @JoinColumn(name = "belog_id", nullable = false)
+    @JoinColumn(name = "belog_id")
     private Belog belog;
 }

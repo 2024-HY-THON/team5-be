@@ -11,11 +11,11 @@ public class Consent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int consent_id;
+    private int consentId;
 
-    @Column(nullable = false)
-    private String consent_name;
+    @Column
+    private String consentName;
 
-    @Column(nullable = false)
+    @Column
     private boolean is_consent;
 }
