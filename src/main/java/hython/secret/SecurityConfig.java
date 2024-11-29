@@ -59,6 +59,7 @@ public class SecurityConfig {
                             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                                 CorsConfiguration config = new CorsConfiguration();
 
+
                                 config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
                                 config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // 허용할 메소드 Get ect on
                                 config.setAllowCredentials(true);
@@ -76,6 +77,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
+
                         .requestMatchers("/login/**","/auth/**","/register/**",
                                 "/v3/api-docs/**", "/swagger/**", "/swagger-ui/**", "/belogs/**").permitAll()
                         .anyRequest().authenticated()

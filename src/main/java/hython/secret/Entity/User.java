@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,7 +27,7 @@ public class User {
     @Column
     private String nickName;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
     @Column
@@ -46,8 +47,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Friends> friends;
 
-    @OneToMany(mappedBy = "friend")
-    private List<Friends> inverseFriends; // 자신을 친구로 추가한 사용자 목록
+//    @OneToMany(mappedBy = "friend")
+//    private List<Friends> inverseFriends = new ArrayList<>(); // 자신을 친구로 추가한 사용자 목록
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Belog> belogs;
@@ -57,6 +58,5 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User_alarm> userAlarms; // 사용자-알림 중간 테이블 매핑
-
 
 }

@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -14,24 +15,29 @@ public class Friends {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int friendId;
+    @Column(name = "friend_id")
+    private int id;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "friend_user_id")
-    private User friend;
+    @Column
+    private String userCode;
 
-    @ColumnDefault("false")
-    private boolean is_accepted;
+    @Column
+    private String friendCode;
 
-    @ColumnDefault("false")
-    private boolean is_blocked;
+    @Column
+    private String friendNickName;
 
-    public Friends() {
-        this.is_accepted = false;
-        this.is_blocked = false;
-    }
+    @Column
+    private FriendShipStatus status;
+
+    @Column
+    private boolean isFrom;
+    @Column
+    private int counterId;
+    // 상대 요청의 아이디
 }
