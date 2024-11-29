@@ -39,7 +39,7 @@ public class Belog {
     @ColumnDefault("false")
     private boolean is_anonymous;
 
-    @OneToMany(mappedBy = "belog", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "belog", cascade = CascadeType.ALL)
     private Set<Belog_Tags> belogTags = new HashSet<>();
 
     @Column
@@ -48,4 +48,10 @@ public class Belog {
     @ColumnDefault("false")
     private boolean isShared;
 
+
+    private long belogLikeCount = 0;
+
+    public void incrementBelogLikeCount() {
+        this.belogLikeCount++;
+    }
 }
