@@ -34,6 +34,7 @@ public class UserController {
             if (userService.existsByUser(requestDTO)) {
                 String userCode = requestDTO.getUserCode();
                 userService.addFriendShip(userCode, principal);
+                log.info("친구 요청 완료");
                 return ResponseEntity.ok(new ApiResponseDTO<>("200", "친구 요청이 성공적으로 전송되었습니다.", null));
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(

@@ -95,14 +95,16 @@ public class UserService {
         // 각 유저 리스트에 친구 요청 추가
         fromUser.getFriends().add(friendsFrom);
         toUser.getFriends().add(friendsTo);
-
+        
         friendsRepository.save(friendsFrom);
         friendsRepository.save(friendsTo);
-
+        log.info("각 유저 리스트에 친구 요청 추가");
+        
         // 매칭되는 친구 요청의 ID를 서로 저장
         friendsFrom.setCounterId(friendsTo.getId());
         friendsTo.setCounterId(friendsFrom.getId());
 
+        log.info("친구 요청의 ID를 서로 저장");
         userRepository.save(fromUser);
         userRepository.save(toUser);
     }
