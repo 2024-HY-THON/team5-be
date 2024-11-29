@@ -20,6 +20,8 @@ public class Award {
     @Column
     private String awardTitle;
 
-    @Column
-    private String awardContent;
+    @Lob
+    private byte[] awardImage;
+
+
 }

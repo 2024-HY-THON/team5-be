@@ -1,13 +1,11 @@
 package hython.secret.Repository;
 
-import hython.secret.Entity.Images;
+import hython.secret.Entity.StampImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
-public interface ImageRepository extends JpaRepository<Images, Integer> {
+public interface StampImageRepository extends JpaRepository<StampImage, Integer> {
 
-    Images findByImageId(int imageId);
-
+    StampImage findById(int id);
 }
