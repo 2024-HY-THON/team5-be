@@ -35,8 +35,10 @@ public class Friends {
     @Enumerated(EnumType.STRING)
     private FriendShipStatus status;    //친구의 상태
 
+
     @Column
     private boolean isFrom;
+
     @Column
     private int counterId;
     // 상대 요청의 아이디

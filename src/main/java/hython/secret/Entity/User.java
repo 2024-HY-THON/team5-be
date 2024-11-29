@@ -43,20 +43,13 @@ public class User {
     @Column
     private LocalDateTime joinDate;
 
-
     @OneToMany(mappedBy = "user")
     private List<Friends> friends;
-
-//    @OneToMany(mappedBy = "friend")
-//    private List<Friends> inverseFriends = new ArrayList<>(); // 자신을 친구로 추가한 사용자 목록
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Belog> belogs;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Award> award;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<User_alarm> userAlarms; // 사용자-알림 중간 테이블 매핑
 
 }

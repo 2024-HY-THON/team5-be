@@ -7,15 +7,17 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Consent {
+public class HatImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int consentId;
+    private int id;
 
-    @Column
-    private String consentName;
+    private String name;
 
-    @Column
-    private boolean is_consent;
+    @Lob
+    private byte[] imageData;
+
+    public HatImage() {}
+
 }
