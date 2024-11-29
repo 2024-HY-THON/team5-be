@@ -11,11 +11,14 @@ import hython.secret.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -63,14 +66,22 @@ public class UserService {
         }
     }
 
-    public void addFriendShip(String userCode, Principal principal) throws Exception {
+    public void addFriendShip(String userCode) throws Exception {
 
-        String fromEmail = principal.getName(); // 현재 로그인 되어있는 사람
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String fromEmail = authentication.getName();  // 현재 로그인된 사용자의 이메일
 
         User fromUser = userRepository.findByEmail(fromEmail);
+        if (fromUser == null) {
+            throw new Exception("해당 사용자를 찾을 수 없습니다: " + fromEmail);
+        }
         String fromCode = fromUser.getUserCode();
         String fromNickname = fromUser.getNickName();
+        // userCode에 해당하는 사용자가 없을 경우 예외 처리
         User toUser = userRepository.findByUserCode(userCode);
+        if (toUser == null) {
+            throw new Exception("해당 사용자를 찾을 수 없습니다: " + userCode);
+        }
         String toNickname = toUser.getNickName();
 
         if (fromUser.getFriends().contains(toUser)){
@@ -109,9 +120,12 @@ public class UserService {
         userRepository.save(toUser);
     }
 
-    public List<WaitingFriendListDTO> getWaitingFriendList(Principal principal) throws Exception {
+    public List<WaitingFriendListDTO> getWaitingFriendList() throws Exception {
+        // SecurityContextHolder를 통해 로그인한 사용자의 이메일 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String fromEmail = authentication.getName();  // 현재 로그인된 사용자의 이메일
 
-        User user = userRepository.findByEmail(principal.getName());
+        User user = userRepository.findByEmail(fromEmail);
         List<Friends> friendsList = user.getFriends();
 
         // 조회된 결과 객체를 담을 DTO
@@ -133,11 +147,11 @@ public class UserService {
     }
 
     public boolean approveRequest(int friendId){
-        Friends friendship = friendsRepository.findById(friendId);
-        Friends counterFriends = friendsRepository.findById((friendship.getCounterId()));
+        Optional<Friends> friendship = friendsRepository.findById(friendId);
+        Optional<Friends> counterFriends = friendsRepository.findById((friendship.get().getCounterId()));
 
-        friendship.setStatus(FriendShipStatus.ACCEPT);
-        counterFriends.setStatus(FriendShipStatus.ACCEPT);
+        friendship.get().setStatus(FriendShipStatus.ACCEPT);
+        counterFriends.get().setStatus(FriendShipStatus.ACCEPT);
 
         return true;
     }

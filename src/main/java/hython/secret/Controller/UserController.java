@@ -28,12 +28,11 @@ public class UserController {
     }
 
     @PostMapping("/friends/{userCode}")
-    public ResponseEntity<ApiResponseDTO<Void>> sendFriendsRequest(@RequestBody FriendShipDTO requestDTO,
-                                                                   Principal principal) throws Exception {
+    public ResponseEntity<ApiResponseDTO<Void>> sendFriendsRequest(@RequestBody FriendShipDTO requestDTO) throws Exception {
         try {
             if (userService.existsByUser(requestDTO)) {
                 String userCode = requestDTO.getUserCode();
-                userService.addFriendShip(userCode, principal);
+                userService.addFriendShip(userCode);
                 log.info("친구 요청 완료");
                 return ResponseEntity.ok(new ApiResponseDTO<>("200", "친구 요청이 성공적으로 전송되었습니다.", null));
             } else {
@@ -47,9 +46,9 @@ public class UserController {
     }
 
     @GetMapping("/friends/received")
-    public ResponseEntity<ApiResponseDTO<List<WaitingFriendListDTO>>> getFriends(Principal principal) throws Exception {
+    public ResponseEntity<ApiResponseDTO<List<WaitingFriendListDTO>>> getFriends() throws Exception {
 
-        List<WaitingFriendListDTO> waitingFriendList = userService.getWaitingFriendList(principal);
+        List<WaitingFriendListDTO> waitingFriendList = userService.getWaitingFriendList();
 
         ApiResponseDTO<List<WaitingFriendListDTO>> response = new ApiResponseDTO<>("200", "대기 중인 친구 요청을 조회했습니다.", waitingFriendList);
 

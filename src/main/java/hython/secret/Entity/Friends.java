@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -36,7 +37,6 @@ public class Friends {
 
     @Column
     private boolean isFrom;
-
     @Column
     private int counterId;
     // 상대 요청의 아이디

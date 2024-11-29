@@ -27,7 +27,7 @@ public class User {
     @Column
     private String nickName;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
     @Column
@@ -58,6 +58,5 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User_alarm> userAlarms; // 사용자-알림 중간 테이블 매핑
-
 
 }
