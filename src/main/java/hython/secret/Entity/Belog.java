@@ -42,4 +42,10 @@ public class Belog {
     @OneToMany(mappedBy = "belog", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Belog_Tags> belogTags = new HashSet<>();
 
+    @Column
+    private String shareLink;
+
+    @ColumnDefault("false")
+    private boolean isShared;
+
 }
