@@ -15,13 +15,17 @@ public class ApiResponseDTO<T> {
     private String message;
 
     @Schema(description = "추가 데이터", example = "{}")
-    private T data;
+    private T data1;
+
+    @Schema(description = "추가 데이터", example = "{}")
+    private T data2;
 
     // 생성자 (data가 있는 경우)
-    public ApiResponseDTO(String status, String message, T data) {
+    public ApiResponseDTO(String status, String message, T data1, T data2) {
         this.status = status;
         this.message = message;
-        this.data = data;
+        this.data1 = data1;
+        this.data2 = data2;
     }
 
 }

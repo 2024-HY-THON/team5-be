@@ -34,14 +34,14 @@ public class UserController {
                 String userCode = requestDTO.getUserCode();
                 userService.addFriendShip(userCode);
                 log.info("친구 요청 완료");
-                return ResponseEntity.ok(new ApiResponseDTO<>("200", "친구 요청이 성공적으로 전송되었습니다.", null));
+                return ResponseEntity.ok(new ApiResponseDTO<>("200", "친구 요청이 성공적으로 전송되었습니다.", null, null));
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                        new ApiResponseDTO<>("400", "해당 유저가 존재하지 않습니다.", null));
+                        new ApiResponseDTO<>("400", "해당 유저가 존재하지 않습니다.", null, null));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ApiResponseDTO<>("500", "친구 요청 처리 중 오류가 발생했습니다: " + e.getMessage(), null));
+                    new ApiResponseDTO<>("500", "친구 요청 처리 중 오류가 발생했습니다: " + e.getMessage(), null, null));
         }
     }
 
@@ -50,7 +50,7 @@ public class UserController {
 
         List<WaitingFriendListDTO> waitingFriendList = userService.getWaitingFriendList();
 
-        ApiResponseDTO<List<WaitingFriendListDTO>> response = new ApiResponseDTO<>("200", "대기 중인 친구 요청을 조회했습니다.", waitingFriendList);
+        ApiResponseDTO<List<WaitingFriendListDTO>> response = new ApiResponseDTO<>("200", "대기 중인 친구 요청을 조회했습니다.", waitingFriendList, null);
 
         return ResponseEntity.ok(response);
 
@@ -62,13 +62,13 @@ public class UserController {
         try {
             if (userService.approveRequest(friendId)) {
                 log.info("친구 요청을 성공적으로 수락되었습니다.");
-                return ResponseEntity.ok(new ApiResponseDTO<>("200", "친구 요청이 성공적으로 수락되었습니다.", null));
+                return ResponseEntity.ok(new ApiResponseDTO<>("200", "친구 요청이 성공적으로 수락되었습니다.", null, null));
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponseDTO<>("400", "해당 친구 요청을 찾을 수 없습니다.", null));
+                    new ApiResponseDTO<>("400", "해당 친구 요청을 찾을 수 없습니다.", null, null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ApiResponseDTO<>("500", "친구 요청 수락 중 오류가 발생했습니다: " + e.getMessage(), null));
+                    new ApiResponseDTO<>("500", "친구 요청 수락 중 오류가 발생했습니다: " + e.getMessage(), null, null));
         }
     }
 }

@@ -26,7 +26,7 @@ public class LoginController {
     public ResponseEntity<ApiResponseDTO<Void>> showLogin(
             @Parameter(description = "로그인 오류 메시지", required = false)
             @RequestParam(value = "error", required = false) String error) {
-        ApiResponseDTO<Void> response = new ApiResponseDTO<>("success","로그인 페이지 요청 성공",null);
+        ApiResponseDTO<Void> response = new ApiResponseDTO<>("success","로그인 페이지 요청 성공",null, null);
 
         return ResponseEntity.ok(response);
     }
@@ -51,7 +51,7 @@ public class LoginController {
             @Parameter(description = "소셜 로그인 제공자 (예: google, facebook, github)", required = true)
             @PathVariable String provider) {
         return ResponseEntity.status(HttpStatus.FOUND)
-                .body(new ApiResponseDTO<>("redirect", "소셜 로그인 페이지로 리디렉션", null));
+                .body(new ApiResponseDTO<>("redirect", "소셜 로그인 페이지로 리디렉션", null, null));
     }
 
 
@@ -69,7 +69,7 @@ public class LoginController {
                     "서버는 세션을 사용하지 않으므로 JWT 기반에서는 토큰 자체를 삭제하는 것이 곧 로그아웃을 의미")
     @PostMapping("/logout")
     public ResponseEntity<ApiResponseDTO<Void>> logoutProc(){
-        ApiResponseDTO<Void> response = new ApiResponseDTO<>("success", "로그아웃 성공", null);
+        ApiResponseDTO<Void> response = new ApiResponseDTO<>("success", "로그아웃 성공", null, null);
 
         return ResponseEntity.ok(response);
     }

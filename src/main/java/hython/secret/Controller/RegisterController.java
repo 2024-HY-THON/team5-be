@@ -27,7 +27,7 @@ public class RegisterController {
             "닉네임 설정 페이지로 이동합니다.")
     @GetMapping("/setNickname")
     public ResponseEntity<ApiResponseDTO<Void>> joinPassword(){
-        ApiResponseDTO<Void> response = new ApiResponseDTO<>("success","oAuth2 소셜 로그인 닉네임 설정 페이지 성공", null);
+        ApiResponseDTO<Void> response = new ApiResponseDTO<>("success","oAuth2 소셜 로그인 닉네임 설정 페이지 성공", null, null);
 
         return ResponseEntity.ok(response);
     }
@@ -47,15 +47,15 @@ public class RegisterController {
         String email = (String) session.getAttribute("email");
 
         if(email == null){
-            return ResponseEntity.badRequest().body(new ApiResponseDTO<>("error", "세션에 email이 없습니다.", null));
+            return ResponseEntity.badRequest().body(new ApiResponseDTO<>("error", "세션에 email이 없습니다.", null, null));
         }
 
         if(verifySevice.updateNickname(nickname,email)){
             session.removeAttribute("email");
-            return ResponseEntity.ok(new ApiResponseDTO<>("success", "닉네임이 성공적으로 설정되었습니다.", null));
+            return ResponseEntity.ok(new ApiResponseDTO<>("success", "닉네임이 성공적으로 설정되었습니다.", null, null));
         } else{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponseDTO<>("error", "닉네임 설정 중 서버에 오류가 발생했습니다.", null));
+                    .body(new ApiResponseDTO<>("error", "닉네임 설정 중 서버에 오류가 발생했습니다.", null, null));
 
         }
     }
