@@ -3,10 +3,7 @@ package hython.secret.Service;
 import java.util.*;
 
 import hython.secret.DTO.BelogDTO;
-import hython.secret.Entity.Belog;
-import hython.secret.Entity.Belog_Tags;
-import hython.secret.Entity.Tags;
-import hython.secret.Entity.User;
+import hython.secret.Entity.*;
 import hython.secret.Repository.BelogRepository;
 import hython.secret.Repository.TagRepository;
 import jakarta.transaction.Transactional;
@@ -102,4 +99,14 @@ public class BelogService {
         belogRepository.save(belog);
         return shareLink;
     }
+
+    @Transactional
+    public Boolean likeBelog(int belogId) {
+        Belog belog = belogRepository.findById(belogId);
+        if(belog == null) throw new IllegalArgumentException("Belog ID" + belogId + " not found");
+        belog.incrementBelogLikeCount();
+        return true;
+    }
+
+
 }

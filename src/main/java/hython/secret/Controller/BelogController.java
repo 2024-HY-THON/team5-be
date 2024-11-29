@@ -82,4 +82,14 @@ public class BelogController {
         }
     }
 
+    @PostMapping("/{belogId}/like")
+    public ResponseEntity<ApiResponseDTO<Void>> likeBelog(@PathVariable int belogId){
+        boolean result = belogService.likeBelog(belogId);
+        if(result){
+            return ResponseEntity.ok(new ApiResponseDTO<>("success", "좋아용!", null));
+        }
+        else{
+            return ResponseEntity.status(404).body(new ApiResponseDTO<>("error", "나올일이 없는 오류", null));
+        }
+    }
 }
