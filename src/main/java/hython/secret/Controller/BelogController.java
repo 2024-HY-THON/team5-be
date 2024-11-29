@@ -6,6 +6,7 @@ import java.util.*;
 import hython.secret.API.ApiResponseDTO;
 import hython.secret.DTO.BelogDTO;
 import hython.secret.DTO.BelogResponseDTO;
+import hython.secret.DTO.UserStatsDTO;
 import hython.secret.Entity.Belog;
 import hython.secret.Service.BelogService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -82,5 +83,11 @@ public class BelogController {
     public ResponseEntity<List<BelogResponseDTO>> getRandomBelog(){
         List<BelogResponseDTO> randomBelogs = belogService.getRandomBelogs();
         return ResponseEntity.ok(randomBelogs);
+    }
+
+    @GetMapping("/{userId}/stats")
+    public ResponseEntity<UserStatsDTO> getUserStats(@PathVariable int userId) {
+        UserStatsDTO stats = belogService.getUserStats(userId);
+        return ResponseEntity.ok(stats);
     }
 }

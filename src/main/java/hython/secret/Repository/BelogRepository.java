@@ -14,4 +14,8 @@ public interface BelogRepository extends JpaRepository<Belog, Integer> {
     // Scope가 ALL인 Belog를 랜덤으로 3개 조회 (SQL로 처리)
     @Query(value = "SELECT * FROM belog WHERE scope = :scope ORDER BY RAND() LIMIT :limit", nativeQuery = true)
     List<Belog> findRandomByScope(@Param("scope") String scope, @Param("limit") int limit);
+
+    @Query("SELECT COALESCE(SUM(b.belogLikeCount), 0) FROM Belog b WHERE b.user.userId = :userId")
+    long sumLikesByUser(@Param("userId") int userId);
+
 }

@@ -3,6 +3,7 @@ package hython.secret.Controller;
 
 import hython.secret.API.ApiResponseDTO;
 import hython.secret.DTO.FriendShipDTO;
+import hython.secret.DTO.UserStatsDTO;
 import hython.secret.DTO.WaitingFriendListDTO;
 import hython.secret.Service.UserService;
 import org.slf4j.Logger;
@@ -71,4 +72,7 @@ public class UserController {
                     new ApiResponseDTO<>("500", "친구 요청 수락 중 오류가 발생했습니다: " + e.getMessage(), null, null));
         }
     }
+
+
+
 }

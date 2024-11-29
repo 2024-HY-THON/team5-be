@@ -2,6 +2,7 @@ package hython.secret.Service;
 
 import hython.secret.DTO.FriendShipDTO;
 import hython.secret.DTO.UserDTO;
+import hython.secret.DTO.UserStatsDTO;
 import hython.secret.DTO.WaitingFriendListDTO;
 import hython.secret.Entity.FriendShipStatus;
 import hython.secret.Entity.Friends;
@@ -155,6 +156,7 @@ public class UserService {
 
         return true;
     }
+
 
 
 }
