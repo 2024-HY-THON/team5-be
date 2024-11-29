@@ -36,7 +36,7 @@ public class Belog {
     @Column
     private LocalDateTime update_at;
 
-    @ColumnDefault("false")
+    @Enumerated(EnumType.STRING)
     private Scope scope;
 
     @OneToMany(mappedBy = "belog", cascade = CascadeType.ALL)

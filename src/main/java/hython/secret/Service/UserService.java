@@ -157,6 +157,15 @@ public class UserService {
         return true;
     }
 
+    // 현재 로그인된 사용자의 ID 반환
+    public int getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            throw new IllegalStateException("현재 인증된 사용자가 없습니다.");
+        }
 
+        // 인증된 사용자라면 Principal에서 ID를 반환
+        return Integer.parseInt(authentication.getPrincipal().toString());
+    }
 }

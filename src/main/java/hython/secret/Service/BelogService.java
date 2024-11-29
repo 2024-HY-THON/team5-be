@@ -7,8 +7,10 @@ import hython.secret.DTO.BelogResponseDTO;
 import hython.secret.DTO.UserStatsDTO;
 import hython.secret.Entity.*;
 import hython.secret.Repository.BelogRepository;
+import hython.secret.Repository.FriendsRepository;
 import hython.secret.Repository.TagRepository;
 import hython.secret.Repository.UserRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,16 @@ public class BelogService {
     private final BelogRepository belogRepository;
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
+    private final FriendsRepository friendsRepository;
+    private final UserService userService;
 
     @Autowired
-    public BelogService(BelogRepository belogRepository, TagRepository tagRepository, UserRepository userRepository) {
+    public BelogService(BelogRepository belogRepository, TagRepository tagRepository, UserRepository userRepository, FriendsRepository friendsRepository, UserService userService) {
         this.belogRepository = belogRepository;
         this.tagRepository = tagRepository;
         this.userRepository = userRepository;
+        this.friendsRepository = friendsRepository;
+        this.userService = userService;
     }
 
     @Transactional
@@ -138,5 +144,33 @@ public class BelogService {
         long totalLikes = belogRepository.sumLikesByUser(userId);
         int awardCount = userRepository.countAwardsByUserId(userId);
         return new UserStatsDTO(belogCount, totalLikes, awardCount);
+    }
+
+    public List<BelogResponseDTO> getFriendBelogs() {
+        // 1. 현재 로그인된 사용자 ID 가져오기
+        int currentUserId = userService.getCurrentUserId();
+
+        // 2. 친구 ID 목록 조회
+        List<Integer> friendIds = friendsRepository.findFriendIdsByUserId(currentUserId);
+
+        if (friendIds.isEmpty()) {
+            return List.of(); // 친구가 없는 경우 빈 리스트 반환
+        }
+
+        // 3. 친구의 별록 조회
+        List<Belog> belogs = belogRepository.findBelogsByFriendIds(friendIds);
+
+        // 4. DTO 변환
+        return belogs.stream()
+                .map(belog -> new BelogResponseDTO(
+                        belog.getBelogId(),
+                        belog.getContent(),
+                        belog.getCreate_at(),
+                        belog.getBelogTags().stream()
+                                .map(tag -> tag.getTags().getName())
+                                .collect(Collectors.toList()),
+                        belog.getBelogLikeCount()
+                ))
+                .collect(Collectors.toList());
     }
 }
