@@ -23,7 +23,7 @@ public class BelogService {
         this.tagRepository = tagRepository;
     }
 
-    public Boolean createBelog(BelogDTO request){
+    public int createBelog(BelogDTO request){
 
         Belog belog = new Belog();
 
@@ -50,13 +50,11 @@ public class BelogService {
             belogTags.add(belogTag);
         }
         belog.setBelogTags(belogTags);
-        System.out.println("생성완료오?");
-        belogRepository.save(belog);
-
-        return true;
+        Belog savedBelog = belogRepository.save(belog);
+        return savedBelog.getBelogId();
     }
 
-    public Boolean updateBelog(int belogId, BelogDTO request){
+    public int updateBelog(int belogId, BelogDTO request){
         Belog belog = belogRepository.findById(belogId);
         belog.setContent(request.getContent());
         belog.setUpdate_at(LocalDateTime.now());
@@ -79,15 +77,16 @@ public class BelogService {
             updatedBelogTags.add(belogTag);
         }
         belog.setBelogTags(updatedBelogTags);
-        belogRepository.save(belog);
-        return true;
+        Belog savedBelog = belogRepository.save(belog);
+        return savedBelog.getBelogId();
     }
 
-    public boolean deleteBelog(int belogId) {
+    public int deleteBelog(int belogId) {
         Belog belog = belogRepository.findById(belogId);
         if(belog == null) throw new IllegalArgumentException("Belog ID" + belogId + " not found");
+        int result = belog.getBelogId();
         belogRepository.delete(belog);
-        return true;
+        return result;
     }
 
     @Transactional
@@ -101,11 +100,11 @@ public class BelogService {
     }
 
     @Transactional
-    public Boolean likeBelog(int belogId) {
+    public long likeBelog(int belogId) {
         Belog belog = belogRepository.findById(belogId);
         if(belog == null) throw new IllegalArgumentException("Belog ID" + belogId + " not found");
         belog.incrementBelogLikeCount();
-        return true;
+        return belog.getBelogLikeCount();
     }
 
 

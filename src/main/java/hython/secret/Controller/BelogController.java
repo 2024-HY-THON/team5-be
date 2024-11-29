@@ -34,26 +34,19 @@ public class BelogController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponseDTO<Void>> createBelog(@RequestBody BelogDTO request){
-        if(belogService.createBelog(request)){
-            return ResponseEntity.ok(new ApiResponseDTO<>("success", "별록이 성공적으로 작성 되었습니다.", null));
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResponseDTO<>("error", "별록 작성 중 서버에 오류가 발생했습니다.", null));
+    public ResponseEntity<ApiResponseDTO<Integer>> createBelog(@RequestBody BelogDTO request){
+        int belogId = belogService.createBelog(request);
+        return ResponseEntity.ok(new ApiResponseDTO<>("success", "별록이 성공적으로 작성 되었습니다.", belogId));
     }
 
     @DeleteMapping("/{belogId}")
-    public ResponseEntity<ApiResponseDTO<Void>> deleteBelog(@PathVariable int belogId){
+    public ResponseEntity<ApiResponseDTO<Integer>> deleteBelog(@PathVariable int belogId){
         try {
-            if(belogService.deleteBelog(belogId)){
+            int returnbelogId = belogService.deleteBelog(belogId);
 //                if (!belog.getUser().getId().equals(requestingUserId)) {
 //                    throw new UnauthorizedException("You do not have permission to delete this Belog.");
 //                }  belog를 삭제할 권한이 있는지 확인하는 코드
-                return ResponseEntity.ok(new ApiResponseDTO<>("success", "별록 삭제가 완료되었습니다", null));
-            }
-            else {
-                return ResponseEntity.status(404).body(new ApiResponseDTO<>("error", "별록 삭제에 실패했습니다.", null));
-            }
+                return ResponseEntity.ok(new ApiResponseDTO<>("success", "별록 삭제가 완료되었습니다", returnbelogId));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(401).body(new ApiResponseDTO<>("error", e.getMessage(), null));
         }
@@ -61,35 +54,26 @@ public class BelogController {
     }
 
     @PutMapping("/{belogId}")
-    public ResponseEntity<ApiResponseDTO<Void>> updateBelog(@PathVariable int belogId, @RequestBody BelogDTO request){
-        boolean result = belogService.updateBelog(belogId, request);
-        
-        if(result){
-            return ResponseEntity.ok(new ApiResponseDTO<>("success", "별록 수정이 완료되었습니다", null));
-        }
-        else{
-            return ResponseEntity.status(404).body(new ApiResponseDTO<>("error", "별록 수정에 실패했습니다.", null));
-        }
+    public ResponseEntity<ApiResponseDTO<Integer>> updateBelog(@PathVariable int belogId, @RequestBody BelogDTO request){
+        int returnbelogId = belogService.updateBelog(belogId, request);
+        return ResponseEntity.ok(new ApiResponseDTO<>("success", "별록 수정이 완료되었습니다", returnbelogId));
+
     }
 
     @PostMapping("/{belogId}/share")
-    public ResponseEntity<ApiResponseDTO<Void>> shareBelog(@PathVariable int belogId){
+    public ResponseEntity<ApiResponseDTO<String>> shareBelog(@PathVariable int belogId){
         try{
             String shareLink = belogService.shareBelog(belogId);
-            return ResponseEntity.ok(new ApiResponseDTO<>("success", shareLink, null));
+            return ResponseEntity.ok(new ApiResponseDTO<>("success", "공유 완료입니다!", shareLink));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(401).body(new ApiResponseDTO<>("error", e.getMessage(), null));
         }
     }
 
     @PostMapping("/{belogId}/like")
-    public ResponseEntity<ApiResponseDTO<Void>> likeBelog(@PathVariable int belogId){
-        boolean result = belogService.likeBelog(belogId);
-        if(result){
-            return ResponseEntity.ok(new ApiResponseDTO<>("success", "좋아용!", null));
-        }
-        else{
-            return ResponseEntity.status(404).body(new ApiResponseDTO<>("error", "나올일이 없는 오류", null));
-        }
+    public ResponseEntity<ApiResponseDTO<Long>> likeBelog(@PathVariable int belogId){
+        long result = belogService.likeBelog(belogId);
+        return ResponseEntity.ok(new ApiResponseDTO<>("success", "좋아용 증가!", result));
+
     }
 }
