@@ -13,10 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/belogs")
@@ -43,4 +40,21 @@ public class BelogController {
                 .body(new ApiResponseDTO<>("error", "별록 작성 중 서버에 오류가 발생했습니다.", null));
     }
 
+    @DeleteMapping("/{belogId}")
+    public ResponseEntity<ApiResponseDTO<Void>> deleteBelog(@PathVariable int belogId){
+        try {
+            if(belogService.deleteBelog(belogId)){
+//                if (!belog.getUser().getId().equals(requestingUserId)) {
+//                    throw new UnauthorizedException("You do not have permission to delete this Belog.");
+//                }  belog를 삭제할 권한이 있는지 확인하는 코드
+                return ResponseEntity.ok(new ApiResponseDTO<>("success", "별록 삭제가 완료되었습니다", null));
+            }
+            else {
+                return ResponseEntity.status(404).body(new ApiResponseDTO<>("error", "별록 삭제에 실패했습니다.", null));
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(401).body(new ApiResponseDTO<>("error", e.getMessage(), null));
+        }
+
+    }
 }
