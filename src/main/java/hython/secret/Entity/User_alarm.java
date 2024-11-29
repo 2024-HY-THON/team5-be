@@ -10,25 +10,24 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class User_consent {
-
+public class User_alarm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "consent_id")
-    private Consent consent;
-
-    @Column
-    private boolean consent_status;
+    @JoinColumn(name = "alarm_id", nullable = false)
+    private Alarm alarm;
 
     @CreationTimestamp
     @Column
     private LocalDateTime consent_date;
+
+    @Column
+    private boolean alarm_status;
 
 }
