@@ -8,6 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -19,7 +22,7 @@ public class Belog {
     private int belogId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private User user;
 
     @Column
@@ -35,4 +38,20 @@ public class Belog {
 
     @ColumnDefault("false")
     private boolean is_anonymous;
+
+    @OneToMany(mappedBy = "belog", cascade = CascadeType.ALL)
+    private Set<Belog_Tags> belogTags = new HashSet<>();
+
+    @Column
+    private String shareLink;
+
+    @ColumnDefault("false")
+    private boolean isShared;
+
+
+    private long belogLikeCount = 0;
+
+    public void incrementBelogLikeCount() {
+        this.belogLikeCount++;
+    }
 }
